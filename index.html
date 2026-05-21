@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>볼록(Ball Log) — 베타 테스터 모집</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F2F1ED;
+    --blue: #2A6DD4;
+    --blue-light: #E8F0FC;
+    --blue-mid: #D0E2FA;
+    --dark: #1a1814;
+    --gray: #6b6560;
+    --gray-light: #E2DED8;
+    --white: #ffffff;
+    --red: #E63946;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: var(--cream);
+    color: var(--dark);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(242, 241, 237, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--gray-light);
+    padding: 0 5%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-logo-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  .nav-logo-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .nav-logo-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--dark);
+    letter-spacing: -0.3px;
+  }
+
+  .nav-logo-text span {
+    color: var(--blue);
+  }
+
+  .nav-cta {
+    background: var(--blue);
+    color: var(--white);
+    border: none;
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    padding: 140px 5% 100px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--blue-light);
+    color: var(--blue);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 28px;
+    border: 0.5px solid var(--blue-mid);
+  }
+
+  .hero-title {
+    font-size: clamp(42px, 6vw, 80px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    margin-bottom: 28px;
+    color: var(--dark);
+  }
+
+  .hero-title .accent {
+    color: var(--blue);
+  }
+
+  .hero-sub {
+    font-size: clamp(16px, 2vw, 20px);
+    color: var(--gray);
+    font-weight: 400;
+    line-height: 1.7;
+    max-width: 560px;
+    margin-bottom: 48px;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--blue);
+    color: var(--white);
+    border: none;
+    padding: 16px 36px;
+    border-radius: 100px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: opacity 0.15s, transform 0.15s;
+  }
+
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--dark);
+    border: 1px solid var(--gray-light);
+    padding: 16px 36px;
+    border-radius: 100px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.15s;
+  }
+
+  .btn-secondary:hover { background: var(--gray-light); }
+
+  /* DIVIDER */
+  .section-divider {
+    width: 100%;
+    height: 0.5px;
+    background: var(--gray-light);
+    margin: 0 auto;
+  }
+
+  /* PAIN POINT */
+  .section {
+    padding: 100px 5%;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--blue);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  .section-title {
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+
+  .section-desc {
+    font-size: 16px;
+    color: var(--gray);
+    line-height: 1.7;
+    margin-bottom: 48px;
+    max-width: 500px;
+  }
+
+  .pain-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+
+  .pain-card {
+    background: var(--white);
+    border: 0.5px solid var(--gray-light);
+    border-radius: 16px;
+    padding: 28px;
+    border-left: 3px solid var(--red);
+  }
+
+  .pain-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--dark);
+  }
+
+  .pain-card-desc {
+    font-size: 14px;
+    color: var(--gray);
+    line-height: 1.6;
+  }
+
+  /* FEATURES */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .feature-card {
+    background: var(--white);
+    border: 0.5px solid var(--gray-light);
+    border-radius: 16px;
+    padding: 32px;
+  }
+
+  .feature-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .feature-icon.diary { background: #E8F5F0; }
+  .feature-icon.feed { background: #FFF8E6; }
+  .feature-icon.circle { background: #FEF0EF; }
+
+  .feature-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -0.3px;
+  }
+
+  .feature-desc {
+    font-size: 14px;
+    color: var(--gray);
+    line-height: 1.7;
+  }
+
+  /* APP SCREENS - 가로스크롤 */
+  .screens-scroll-wrap {
+    overflow-x: auto;
+    padding-bottom: 16px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-light) transparent;
+  }
+
+  .screens-scroll-wrap::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .screens-scroll-wrap::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .screens-scroll-wrap::-webkit-scrollbar-thumb {
+    background: var(--gray-light);
+    border-radius: 4px;
+  }
+
+  .screens-scroll-inner {
+    display: flex;
+    gap: 16px;
+    width: max-content;
+  }
+
+  .screen-placeholder {
+    background: var(--white);
+    border: 0.5px solid var(--gray-light);
+    border-radius: 20px;
+    width: 200px;
+    aspect-ratio: 9/19.5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .screen-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+  }
+
+  .screen-placeholder-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--blue-light);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+  }
+
+  .screen-placeholder-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--blue);
+  }
+
+  .screen-placeholder-sub {
+    font-size: 12px;
+    color: var(--gray);
+    text-align: center;
+    padding: 0 16px;
+  }
+
+  .screen-notice {
+    text-align: center;
+    font-size: 12px;
+    color: var(--gray);
+    margin-top: 16px;
+    padding: 10px 16px;
+    background: var(--white);
+    border: 0.5px solid var(--gray-light);
+    border-radius: 8px;
+    display: inline-block;
+  }
+
+  /* BENEFITS */
+  .benefits-wrap {
+    background: var(--white);
+    border: 0.5px solid var(--gray-light);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .benefit-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 28px 32px;
+    border-bottom: 0.5px solid var(--gray-light);
+  }
+
+  .benefit-row:last-child { border-bottom: none; }
+
+  .benefit-icon-wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--blue-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 18px;
+  }
+
+  .benefit-icon-wrap.warn { background: #FFF3CD; }
+
+  .benefit-text-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .benefit-text-desc {
+    font-size: 14px;
+    color: var(--gray);
+    line-height: 1.6;
+  }
+
+  /* CIRCLE SECTION */
+  .circle-box {
+    background: var(--blue);
+    border-radius: 20px;
+    padding: 48px;
+    color: var(--white);
+  }
+
+  .circle-box .section-label {
+    color: rgba(255,255,255,0.65);
+  }
+
+  .circle-box .section-title {
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+
+  .circle-box .section-desc {
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 0;
+  }
+
+  /* CTA */
+  .cta-section {
+    padding: 100px 5%;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .cta-title {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+
+  .cta-desc {
+    font-size: 16px;
+    color: var(--gray);
+    margin-bottom: 40px;
+    line-height: 1.7;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 0.5px solid var(--gray-light);
+    padding: 40px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .footer-left {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.7;
+  }
+
+  .footer-logo {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--dark);
+  }
+
+  .footer-logo span { color: var(--blue); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-up {
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+
+  @media (max-width: 640px) {
+    .screens-wrap { grid-template-columns: 1fr; }
+    .hero-title { letter-spacing: -1px; }
+    .circle-box { padding: 32px 24px; }
+    footer { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-text">Ball <span>Log</span></span>
+  </a>
+  <a href="https://forms.gle/2srwBYxoPxwjwYXs5" class="nav-cta">1차 베타 신청하기</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge fade-up">⚾ 볼록(Ball Log) — 1차 베타 테스터 모집</div>
+  <h1 class="hero-title fade-up delay-1">
+    야구팬인데<br>
+    야구 얘기 할 곳이<br>
+    <span class="accent">없었잖아요.</span>
+  </h1>
+  <p class="hero-sub fade-up delay-2">
+    기록하고, 나누고, 모이는<br>
+    야구팬만을 위한 전용 플랫폼, 볼록.<br>
+    지금 1차 베타 테스터를 모집하고 있어요.
+  </p>
+  <div class="hero-buttons fade-up delay-3">
+    <a href="https://forms.gle/2srwBYxoPxwjwYXs5" class="btn-primary">1차 베타 테스터 신청하기 →</a>
+    <a href="#features" class="btn-secondary">볼록이 뭐예요?</a>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- PAIN POINTS -->
+<div class="section">
+  <div class="section-label">BALL LOG 강점</div>
+  <h2 class="section-title">이런 경험,<br>한 번쯤 있지 않아요?</h2>
+  <p class="section-desc">볼록이 해결하고자 하는 것들이에요.</p>
+
+  <div class="pain-cards">
+    <div class="pain-card" style="background: #EEF4FF; border: none;">
+      <div class="pain-card-title">공개형 커뮤니티, 이제 지치지 않았어요?</div>
+      <div class="pain-card-desc">타팀 팬과의 갈등, 끝없는 악플. 경기보다 싸움이 더 많은 타임라인.</div>
+    </div>
+    <div class="pain-card" style="background: #FFF8EC; border: none;">
+      <div class="pain-card-title">인스타에 야구 얘기 올리기 눈치보이지 않았어요?</div>
+      <div class="pain-card-desc">야구 모르는 팔로워들 사이, 눈치 보며 올리는 야구 얘기.</div>
+    </div>
+    <div class="pain-card" style="background: #EEFAF5; border: none;">
+      <div class="pain-card-title">그 경기, 지금 기억도 잘 안 나지 않아요?</div>
+      <div class="pain-card-desc">어디에도 제대로 남기지 못한 채 흐릿해지는 내 야구 기록.</div>
+    </div>
+    <div class="pain-card" style="background: #F3EFFE; border: none;">
+      <div class="pain-card-title">야구만을 위한 플랫폼이 왜 없지?</div>
+      <div class="pain-card-desc">대학생은 에브리타임, 직장인은 블라인드.<br>그러면 야구팬은?</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- FEATURES -->
+<div class="section" id="features">
+  <div class="section-label">BALL LOG 소개</div>
+  <h2 class="section-title">볼록만의<br>특징을 소개합니다</h2>
+  <p class="section-desc">야구팬을 위해 설계된 기록 · 공유 · 커뮤니티 플랫폼.</p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon diary">📒</div>
+      <div class="feature-title">볼로그</div>
+      <div class="feature-desc">볼록의 야구 다이어리예요. 1경기 1볼로그 구조. 표지와 속지로 나만의 야구 기록장을 매 경기 완성해가요. 경기결과, 감상, 사진, 선수 스탯까지 한 곳에.<br><br><span style="font-size: 12px; color: var(--gray);">*선수 스탯 기능은 초기 버전 특성상 데이터 정확도가 낮고 업데이트가 느릴 수 있어요. 더 나은 모습으로 돌아올 때까지 조금만 기다려주세요. 🙏</span></div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon feed">👥</div>
+      <div class="feature-title">피드</div>
+      <div class="feature-desc">팔로워와 볼로그를 공유하며 같은 경기를 함께 이야기로 꾸며가요. 분절된 기록이 아닌 함께 쓰는 이야기.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon circle">💬</div>
+      <div class="feature-title">서클</div>
+      <div class="feature-desc">성향 태그로 맞는 팬들과 모여요. 친목형, 분석형, 매운맛, 순한맛 등 나와 맞는 서클을 찾아 감정을 나눠요.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon diary">🔗</div>
+      <div class="feature-title">연결 & 아카이브</div>
+      <div class="feature-desc">볼로그 · 피드 · 서클이 하나로 이어져요. 피드 사진은 볼로그로, 서클 게시물은 볼로그에 영구박제. 모든 활동이 자동연계되어 나만의 기록으로 남아요.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- APP SCREENS -->
+<div class="section">
+  <div class="section-label">앱 화면</div>
+  <h2 class="section-title">볼록 화면<br>둘러보기</h2>
+  <p class="section-desc">현재 개발 중이에요. 베타 테스터가 되면 가장 먼저 만날 수 있어요.</p>
+
+  <div class="screens-scroll-wrap">
+    <div class="screens-scroll-inner">
+      <div class="screen-placeholder">
+        <img src="screen1.png" alt="볼로그 홈">
+      </div>
+      <div class="screen-placeholder">
+        <img src="screen2.png" alt="볼로그 표지">
+      </div>
+      <div class="screen-placeholder">
+        <img src="screen3.png" alt="경기 결과 속지">
+      </div>
+      <div class="screen-placeholder">
+        <img src="screen6.png" alt="선수 속지">
+      </div>
+      <div class="screen-placeholder">
+        <img src="screen5.png" alt="서클 정보">
+      </div>
+      <div class="screen-placeholder">
+        <img src="screen4.png" alt="서클 피드">
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top: 16px;">
+    <span class="screen-notice">⚠️ 화면은 개발 중으로 변경될 수 있습니다. 일부 기록 관련 기능은 아직 불안정할 수 있어요.</span>
+  </div>
+  <div style="text-align:center; margin-top: 8px;">
+    <span style="font-size: 11px; color: var(--gray);">* 위 게시물 및 사용자 정보는 예시일 뿐, 실제 유저들의 반응이 아닙니다.</span>
+  </div>
+
+  <!-- 개발자 한마디 -->
+  <div style="margin-top: 32px;">
+    <button onclick="var c=this.nextElementSibling; c.style.display=c.style.display==='none'?'block':'none'; this.querySelector('.arrow').style.transform=c.style.display==='none'?'rotate(0deg)':'rotate(180deg)';"
+      style="width: 100%; background: var(--white); border: 0.5px solid var(--gray-light); border-radius: 16px; padding: 20px 28px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-family: 'Noto Sans KR', sans-serif;"
+      onmouseover="this.style.background='#f7f6f2'" onmouseout="this.style.background='var(--white)'">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 14px; font-weight: 700; color: var(--dark);">볼록 개발진의 한마디</span>
+        <span style="font-size: 12px; color: var(--gray);">장문 주의 🙏</span>
+      </div>
+      <span class="arrow" style="font-size: 12px; color: var(--gray); transition: transform 0.2s; display: inline-block;">▼</span>
+    </button>
+    <div style="display: none; background: var(--white); border: 0.5px solid var(--gray-light); border-top: none; border-radius: 0 0 16px 16px; padding: 32px 28px;">
+      <p style="font-size: 15px; line-height: 2; color: #3a3632; white-space: pre-line;">안녕하세요, 볼록(Ball Log) 개발자예요.
+
+1차 베타는 아주 소수의 인원과 함께 시작해요.
+서버 비용 문제로 작게 출발하지만, 함께 오류를 찾고 가능성을 확인하면 그때 넓혀갈 거예요.
+
+1차가 안정화되면 2차 베타가 시작돼요.
+그때는 지인을 직접 초대해서 함께 즐길 수 있어요.
+볼록은 혼자 쓰는 앱이 아니에요. 같이 쓸수록 더 깊어지는 앱이에요.
+
+시즌이 끝나도 볼록은 계속 쓸 수 있고,
+정규오픈이 되어도 지금 여러분이 쌓아온 기록은 그대로 볼로그에 남아요.
+볼록이 성장했을 때, 누구보다 긴 로그를 가진 사람이 될 기회예요.
+
+—
+
+솔직히 말할게요.
+볼록은 지금 수많은 대형 커뮤니티, SNS와 싸워야 할 운명이에요.
+
+그치만 저도 똑같은 커뮤니티와 SNS를 쓰면서 느꼈던 불편함 때문에 이 앱을 만들었어요.
+지치는 타임라인, 눈치 보이는 야구 얘기, 흐릿해지는 기억들.
+야구팬의 불편함을 가장 잘 아는 사람이 만든, 최선의 대안이 되고 싶어요.
+
+저는 할 수 있는 걸 다 했어요.
+아직 세상에 없는, 독창적인 기능들도 머릿속에 잔뜩 담아두고 있어요.
+
+그런데 솔직히, 지금 저는 이 앱을 계속 만들어나갈지 결정해야 하는 시점에 서 있어요.
+그 결정을 내려줄 수 있는 건, 개발자인 저가 아니라 볼록을 써줄 여러분이에요.
+
+이길 수 있을지 모르지만, 야구팬만을 위한 공간은 반드시 있어야 한다고 믿어요.
+지금은 작은 씨앗이에요.
+하지만 처음부터 함께한 사람들이 있다면, 언젠가 거목이 될 수 있다고 생각해요.
+
+볼록의 방향성은 팬들이 만들어가는 거라고 생각해요.
+그 첫 번째 사람이 되어주세요.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- BENEFITS -->
+<div class="section">
+  <div class="section-label">베타 테스터 혜택</div>
+  <h2 class="section-title">볼록의 시작을<br>함께한 증거</h2>
+  <p class="section-desc">볼록이 성장했을 때, 당신이 처음부터 함께했다는 걸 뱃지가 말해줘요.<br>초기 베타테스터 뱃지는 이후 어떤 방법으로도 얻을 수 없어요.</p>
+
+  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+
+    <!-- 2차만 -->
+    <div style="background: var(--white); border: 0.5px solid var(--gray-light); border-radius: 20px; padding: 32px; display: flex; flex-direction: column; gap: 20px;">
+      <div>
+        <span style="display: inline-flex; align-items: center; padding: 6px 16px; border-radius: 100px; background: #EBF2FD; border: 1px solid #85B7EB; font-size: 13px; font-weight: 700; color: #185FA5; letter-spacing: 0.03em;">2차 베타테스터</span>
+      </div>
+      <div>
+        <div style="font-size: 20px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 4px;">2차만</div>
+        <div style="font-size: 13px; color: var(--gray);">사실상 제한된 정규오픈</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; border-top: 0.5px solid var(--gray-light); padding-top: 20px;">
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <span style="color: var(--blue); font-size: 15px; flex-shrink: 0;">✓</span>
+          <span style="font-size: 14px; line-height: 1.5;">2차 뱃지 영구 지급 (이후 획득 불가)</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <span style="color: var(--blue); font-size: 15px; flex-shrink: 0;">✓</span>
+          <span style="font-size: 14px; line-height: 1.5;">다음 시즌 정규오픈까지 무료 이용</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <span style="color: var(--blue); font-size: 15px; flex-shrink: 0;">✓</span>
+          <span style="font-size: 14px; line-height: 1.5;">프리미엄 출시 시 이용권 <strong>3개월</strong> 무료</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <span style="color: var(--blue); font-size: 15px; flex-shrink: 0;">✓</span>
+          <span style="font-size: 14px; line-height: 1.5;">베타 전용 오카방 오픈 — 기능 제안 가능. <span style="color: var(--gray); font-size: 13px;">정규오픈 시 삭제 예정.</span></span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <span style="color: var(--blue); font-size: 15px; flex-shrink: 0;">✓</span>
+          <span style="font-size: 14px; line-height: 1.5;">개발자 노트 열람 가능 *</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <span style="color: var(--gray); font-size: 15px; flex-shrink: 0;">!</span>
+          <span style="font-size: 13px; color: var(--gray); line-height: 1.5;">앱 개발 중단 시 혜택 제공이 어려울 수 있어요.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1&2차 -->
+    <div style="background: var(--white); border: 2px solid #7F77DD; border-radius: 20px; padding: 32px; display: flex; flex-direction: column; gap: 20px; position: relative;">
+      <div style="position: absolute; top: -12px; left: 32px; background: #534AB7; color: #fff; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 100px; letter-spacing: 0.05em;">가장 희귀</div>
+      <div>
+        <span style="display: inline-flex; align-items: center; padding: 6px 16px; border-radius: 100px; background: #F0EFFE; border: 1px solid #CECBF6; font-size: 13px; font-weight: 700; color: #534AB7; letter-spacing: 0.03em; white-space: nowrap;">1&2차 베타테스터</span>
+      </div>
+      <div>
+        <div style="font-size: 20px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 4px;">1차 + 2차 모두</div>
+        <div style="font-size: 13px; color: var(--gray);">볼록의 첫 시작을 함께한 유일한 증거</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; border-top: 0.5px solid var(--gray-light); padding-top: 20px;">
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <span style="color: #534AB7; font-size: 15px; flex-shrink: 0;">✓</span>
+          <span style="font-size: 14px; line-height: 1.5;">1&2차 뱃지 영구 지급 (이후 획득 불가)</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <span style="color: #534AB7; font-size: 15px; flex-shrink: 0;">✓</span>
+          <span style="font-size: 14px; line-height: 1.5;">다음 시즌 정규오픈까지 무료 이용</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <span style="color: #534AB7; font-size: 15px; flex-shrink: 0;">✓</span>
+          <span style="font-size: 14px; line-height: 1.5;">프리미엄 출시 시 이용권 <strong>6개월</strong> 무료</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <span style="color: #534AB7; font-size: 15px; flex-shrink: 0;">✓</span>
+          <span style="font-size: 14px; line-height: 1.5;">베타 전용 오카방 오픈 — 기능 제안 가능. <span style="color: var(--gray); font-size: 13px;">정규오픈 시 삭제 예정.</span></span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <span style="color: #534AB7; font-size: 15px; flex-shrink: 0;">✓</span>
+          <span style="font-size: 14px; line-height: 1.5;">개발자 노트 열람 가능 *</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: flex-start;">
+          <span style="color: var(--gray); font-size: 15px; flex-shrink: 0;">!</span>
+          <span style="font-size: 13px; color: var(--gray); line-height: 1.5;">앱 개발 중단 시 혜택 제공이 어려울 수 있어요.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <p style="font-size: 12px; color: var(--gray); line-height: 1.7; margin-bottom: 48px;">* 개발자 노트(향후 볼록의 방향성 및 개발자가 구상하는 청사진)는 2차 베타테스트 이후 유저가 쌓여감에 따라 천천히 공개될 예정이에요. 정규오픈 시 삭제 예정.</p>
+
+  <!-- CIRCLE BOX -->
+  <div class="circle-box">
+    <div class="section-label">오카방 전용 서클</div>
+    <h3 class="section-title" style="font-size: clamp(22px, 3vw, 36px); margin-bottom: 12px;">신청한 오카방 전용<br>서클을 만들어드려요.</h3>
+    <p class="section-desc" style="margin-bottom: 0;">같은 방 팬들과 볼록에서 먼저 만나요. 이후엔 직접 서클을 만들고 확장도 할 수 있어요.</p>
+  </div>
+</div>
+
+<!-- 열풍 섹션 -->
+<div class="section-divider"></div>
+<div style="background: var(--cream); padding: 100px 5%;">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <div class="section-label">볼록과 함께</div>
+    <h2 class="section-title">아무리 좋은 앱도<br>혼자선 의미없어요.</h2>
+    <p style="font-size: clamp(16px, 2vw, 20px); color: var(--gray); line-height: 1.8; max-width: 640px; margin-top: 16px;">
+      1차 베타를 쓰면서, 같은 경기를 함께 기록하고, 공유하고, 회고하는 모습을 상상해보세요.<br><br>
+      10년이 지나고 되돌아봤을 때 남겨진 "나만의" 인생경기들 — 그 시작이 지금이에요.<br><br>
+      2차 베타가 시작되면 주변 야구팬 친구들에게 가장 먼저 알려주세요.<br>
+      <strong style="color: var(--dark);">볼록 열풍의 시작점이 되어주세요.</strong>
+    </p>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="section-divider"></div>
+<div id="apply" style="background: var(--blue); padding: 100px 5%; text-align: center;">
+  <div style="max-width: 700px; margin: 0 auto;">
+    <h2 style="font-size: clamp(32px, 5vw, 56px); font-weight: 900; letter-spacing: -1.5px; line-height: 1.15; margin-bottom: 20px; color: var(--white);">야구의 모든 순간을<br>볼록과 함께해요</h2>
+    <p style="font-size: 16px; color: rgba(255,255,255,0.75); margin-bottom: 40px; line-height: 1.8;">
+      현재 아주 소수의 인원을 대상으로 <strong style="color: var(--white);">1차 베타테스트</strong>를 진행하려고 해요.<br>
+      앱 내 중대한 오류를 함께 찾아주실 분들을 모집해요.<br><br>
+      1차 안정화 이후 <strong style="color: var(--white);">2차 베타테스트</strong>가 진행돼요. TestFlight 수용 인원 내에서 운영되기 때문에 신청 후 승인 방식으로 진행되며, 2차 참여자는 다음 시즌 정규오픈까지 볼록을 계속 이용하실 수 있어요.<br><br>
+      신청서를 작성해주시면 검토 후 다운로드 링크를 메일로 개별 발송해드려요.<br>
+      iOS(TestFlight) · Android 모두 지원 예정이에요.
+    </p>
+    <a href="https://forms.gle/2srwBYxoPxwjwYXs5" style="background: var(--white); color: var(--blue); border: none; padding: 18px 48px; border-radius: 100px; font-size: 18px; font-weight: 700; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; text-decoration: none; display: inline-block; transition: opacity 0.15s;">1차 베타 테스터 신청하기 ⚾</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="section-divider"></div>
+<footer>
+  <div class="footer-logo">Ball <span>Log</span></div>
+  <div class="footer-left">
+    볼록(Ball Log) — 나만의 야구 다이어리<br>
+    야구팬의 모든 순간이 사라지지 않도록. ⚾
+  </div>
+</footer>
+
+</body>
+</html>
